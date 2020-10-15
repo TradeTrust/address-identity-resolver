@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "jsx": "react",
     "sourceMap": true,
-    "types": ["jest", "@emotion/core"]
+    "types": ["jest"]
   },
   "include": ["src"]
 }

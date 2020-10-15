@@ -1,6 +1,6 @@
-name: CI Test
+name: Pull Request CI Test
 
-on: [push]
+on: [pull_request]
 
 jobs:
   test:
@@ -29,3 +29,5 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm run test
+      - name: Build
+        run: npm run build
