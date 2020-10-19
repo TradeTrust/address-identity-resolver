@@ -1,7 +1,7 @@
-import { useCallback, SetStateAction, Dispatch } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import createPersistedState from "use-persisted-state";
-import { AddressBookLocalProps, ResolutionResult } from "../../types";
-import { readAsText, csvToAddressBook } from "../../services/localAddressBookResolver";
+import { csvToAddressBook, readAsText } from "../../../services/localAddressBookResolver";
+import { AddressBookLocalProps, ResolutionResult } from "../../../types";
 
 interface UseAddressBook {
   addressBook: AddressBookLocalProps;
@@ -14,6 +14,7 @@ interface UseAddressBook {
 export const useAddressBook = (): UseAddressBook => {
   const defaultAddressBook: AddressBookLocalProps = {};
   const [addressBook, setAddressBook] = createPersistedState("ADDRESS_BOOK")(defaultAddressBook);
+
   const handleLocalAddressBookCsv = useCallback(
     async (csvFile: File): Promise<void> => {
       const csv = await readAsText(csvFile);
