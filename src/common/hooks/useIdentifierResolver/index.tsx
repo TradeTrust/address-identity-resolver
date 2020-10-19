@@ -1,1 +1,1 @@
-export * from "./useIdentitierResolver";
+export * from "./useIdentifierResolver";

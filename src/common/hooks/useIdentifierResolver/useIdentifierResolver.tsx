@@ -3,12 +3,12 @@ import { getIdentityName } from "../../../services/addressResolver";
 import { useAddressBook } from "../useAddressBook";
 import { useThirdPartyAPIEndpoints } from "../useThirdPartyAPIEndpoints";
 
-interface UseIdentitierResolverProps {
+interface UseIdentifierResolverProps {
   resolvedIdentifier: string;
   identifierSource?: string;
 }
 
-export const useIdentifierResolver = (address: string): UseIdentitierResolverProps => {
+export const useIdentifierResolver = (address: string): UseIdentifierResolverProps => {
   const [resolvedIdentifier, setResolvedIdentifier] = useState("");
   const [identifierSource, setIdentifierSource] = useState<string>();
   const { thirdPartyAPIEndpoints } = useThirdPartyAPIEndpoints();
@@ -19,7 +19,7 @@ export const useIdentifierResolver = (address: string): UseIdentitierResolverPro
     setResolvedIdentifier(""); // unset resolvedIdentifier at beginning
 
     const resolveIdentity = async (): Promise<void> => {
-      // resolve by address book first, then by thirdparty endpoint
+      // resolve by address book first, then by third-party endpoint
       const identityName =
         getIdentifier(address.toLowerCase()) || (await getIdentityName(thirdPartyAPIEndpoints, address));
       if (identityName) {
