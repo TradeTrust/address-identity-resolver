@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import createPersistedState from "use-persisted-state";
 import { ThirdPartyAPIEntryProps } from "../../../types";
 
-interface UseThirdPartyAPIEndPoints {
+interface UseThirdPartyAPIEndpoints {
   thirdPartyAPIEndpoints: ThirdPartyAPIEntryProps[];
   setThirdPartyAPIEndpoints: Dispatch<SetStateAction<ThirdPartyAPIEntryProps[]>>;
   addThirdPartyAPIEndpoint: (newValues: ThirdPartyAPIEntryProps) => void;
   removeThirdPartyAPIEndpoint: (id: number) => void;
 }
 
-export const useThirdPartyAPIEndpoints = (): UseThirdPartyAPIEndPoints => {
+export const useThirdPartyAPIEndpoints = (): UseThirdPartyAPIEndpoints => {
   const defaultThirdPartyAPIEndpoints: ThirdPartyAPIEntryProps[] = [];
   const [thirdPartyAPIEndpoints, setThirdPartyAPIEndpoints] = createPersistedState("ADDRESS_THIRD_PARTY_ENDPOINTS")(
     defaultThirdPartyAPIEndpoints
