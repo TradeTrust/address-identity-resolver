@@ -1,6 +1,6 @@
-import { AddressBookCsvData, AddressBookLocalProps } from "../types";
 import { parse } from "papaparse";
-import { isEthereumAddress } from "../utils";
+import { AddressBookCsvData, AddressBookLocalProps } from "../../types";
+import { isEthereumAddress } from "../../utils";
 
 export const csvToAddressBook = (csv: string): AddressBookLocalProps => {
   const { data } = parse<AddressBookCsvData>(csv, { skipEmptyLines: true, header: true });
