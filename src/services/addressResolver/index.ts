@@ -21,6 +21,12 @@ interface EntityLookupProps {
   apiKey?: string;
 }
 
+interface ResolveAddressIdentityByEndpointProps {
+  name: string;
+  source: string;
+  [key: string]: string; // to account for any other field that might be used from api response.
+}
+
 const get = async ({
   url,
   apiHeader,
@@ -53,11 +59,11 @@ export const entityLookup = async ({
   return response.data.identities;
 };
 
-export const resolveAddressNameByEndpoint = async (
+export const resolveAddressIdentityByEndpoint = async (
   url: string,
   apiHeader: string,
   apiKey: string
-): Promise<string | undefined> => {
+): Promise<ResolveAddressIdentityByEndpointProps | undefined> => {
   // Default TTL is 5 Mins to change timeout check https://github.com/kuitos/axios-extensions#cacheadapterenhancer
   try {
     const response = await get({
@@ -66,27 +72,27 @@ export const resolveAddressNameByEndpoint = async (
       apiKey,
       cache: true,
     });
-    return response.data?.identity?.name;
+    return response.data?.identity;
   } catch (e) {
     trace(`Resolve Address Status: ${e}`);
     return undefined;
   }
 };
 
-export const getIdentityName = async (
+export const getIdentity = async (
   addresses: ThirdPartyAPIEntryProps[],
   address: string
 ): Promise<ResolutionResult | undefined> => {
-  const identityName = await addresses.reduce(async (accumulator, currentValue) => {
+  const identity = await addresses.reduce(async (accumulator, currentValue) => {
     if (await accumulator) return accumulator;
     if (!currentValue.path.addressResolution) return undefined;
     const url = getPath(join(currentValue.path.addressResolution, address), currentValue.endpoint);
-    const result = await resolveAddressNameByEndpoint(url, currentValue.apiHeader, currentValue.apiKey);
-    if (!result) return undefined;
-    return { result, source: currentValue.name };
+    const identity = await resolveAddressIdentityByEndpoint(url, currentValue.apiHeader, currentValue.apiKey);
+    if (!identity) return undefined;
+    return { name: identity.name, resolvedBy: currentValue.name, source: identity.source };
   }, Promise.resolve<ResolutionResult | undefined>(undefined));
 
-  return identityName;
+  return identity;
 };
 
 interface FeatureResponse {

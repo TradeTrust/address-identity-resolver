@@ -52,12 +52,13 @@ describe("useAddressBook", () => {
     expect(result.current.addressBook).toStrictEqual(sampleAddressBook);
     const identityResult = result.current.getIdentifier("0xE94E4f16ad40ADc90C29Dc85b42F1213E034947C");
     expect(identityResult).toStrictEqual({
-      result: "Bank of China",
-      source: "Local",
+      name: "Bank of China",
+      resolvedBy: "Local",
+      source: "",
     });
   });
 
-  it("should return undefined if no such idenitity in local address book", async () => {
+  it("should return undefined if no such identity in local address book", async () => {
     expect.assertions(2);
     const { result } = renderHook(() => useAddressBook());
     await act(async () => {

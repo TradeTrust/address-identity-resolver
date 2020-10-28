@@ -10,7 +10,8 @@ export interface AddressBookLocalProps {
 }
 
 export type ResolutionResult = {
-  result: string;
+  name: string;
+  resolvedBy: string;
   source: string;
 };
 
@@ -28,6 +29,7 @@ export interface ThirdPartyAPIEntryProps {
 export interface AddressBookThirdPartyResultsProps {
   identifier: string;
   name: string;
+  source: string;
   remarks: string;
 }
 
