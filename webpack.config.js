@@ -5,14 +5,14 @@ module.exports = {
     path: __dirname + "/build",
     filename: "index.js",
     libraryTarget: "umd",
-    library: "decentralizedRenderer"
+    library: "decentralizedRenderer",
   },
   externals: {
     react: "react",
-    "react-dom": "react-dom"
+    "react-dom": "react-dom",
   },
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"]
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   module: {
     rules: [
@@ -20,9 +20,9 @@ module.exports = {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
-  }
+          loader: "babel-loader",
+        },
+      },
+    ],
+  },
 };

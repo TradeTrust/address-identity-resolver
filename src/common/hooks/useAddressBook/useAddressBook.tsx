@@ -27,7 +27,7 @@ export const useAddressBook = (): UseAddressBook => {
   const getIdentifier = useCallback(
     (address: string): ResolutionResult | undefined => {
       const result = addressBook[address.toLowerCase()];
-      return result ? { result, source: "Local" } : undefined;
+      return result ? { name: result, resolvedBy: "Local", source: "" } : undefined;
     },
     [addressBook]
   ); // useCallback needed to prevent multiple calls

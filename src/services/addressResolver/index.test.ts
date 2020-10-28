@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ThirdPartyAPIEntryProps } from "../../types";
-import { getFeatures, getIdentityName, getPath } from "./index";
+import { getFeatures, getIdentity, getPath } from "./index";
 
 jest.mock("axios");
 jest.mock("./axiosClient");
@@ -12,7 +12,7 @@ describe("addressResolver", () => {
     mockedAxios.get.mockReset();
   });
 
-  describe("getIdentityName", () => {
+  describe("getIdentity", () => {
     it("should return the first name if it can be found with any resolver", async () => {
       mockedAxios.get.mockResolvedValueOnce({
         data: {
@@ -20,6 +20,7 @@ describe("addressResolver", () => {
             identifier: "0xA",
             name: "ABC Pte Ltd",
             remarks: "Added by Raymond",
+            source: "GovTech, Singapore",
           },
         },
       });
@@ -37,8 +38,8 @@ describe("addressResolver", () => {
         },
       ];
 
-      const identityName = await getIdentityName(endpoints, "0xA");
-      expect(identityName).toEqual({ result: "ABC Pte Ltd", source: "demo" });
+      const identity = await getIdentity(endpoints, "0xA");
+      expect(identity).toEqual({ name: "ABC Pte Ltd", resolvedBy: "demo", source: "GovTech, Singapore" });
     });
 
     it("should return undefined if it cannot be resolved anywhere", async () => {
@@ -61,8 +62,8 @@ describe("addressResolver", () => {
         },
       ];
 
-      const identityName = await getIdentityName(endpoints, "0xB");
-      expect(identityName).toBeUndefined();
+      const identity = await getIdentity(endpoints, "0xB");
+      expect(identity).toBeUndefined();
     });
 
     it("should return undefined with empty resolver list", async () => {
@@ -74,8 +75,8 @@ describe("addressResolver", () => {
 
       const endpoints: ThirdPartyAPIEntryProps[] = [];
 
-      const identityName = await getIdentityName(endpoints, "0xC");
-      expect(identityName).toBeUndefined();
+      const identity = await getIdentity(endpoints, "0xC");
+      expect(identity).toBeUndefined();
     });
 
     it("should work for url with trailing slashes", async () => {
@@ -85,6 +86,7 @@ describe("addressResolver", () => {
             identifier: "0xA",
             name: "ABC Pte Ltd",
             remarks: "Added by Raymond",
+            source: "GovTech, Singapore",
           },
         },
       });
@@ -102,9 +104,9 @@ describe("addressResolver", () => {
         },
       ];
 
-      const identityName = await getIdentityName(endpoints, "0xA");
+      const identity = await getIdentity(endpoints, "0xA");
       expect(mockedAxios.get.mock.calls[0][0]).toBe("https://demo-resolver.tradetrust.io/identifier/0xA");
-      expect(identityName).toEqual({ result: "ABC Pte Ltd", source: "demo" });
+      expect(identity).toEqual({ name: "ABC Pte Ltd", resolvedBy: "demo", source: "GovTech, Singapore" });
     });
   });
 
