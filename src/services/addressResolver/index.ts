@@ -21,6 +21,12 @@ interface EntityLookupProps {
   apiKey?: string;
 }
 
+interface ResolveAddressIdentityByEndpointProps {
+  name: string;
+  source: string;
+  [key: string]: string;
+}
+
 const get = async ({
   url,
   apiHeader,
@@ -57,7 +63,7 @@ export const resolveAddressIdentityByEndpoint = async (
   url: string,
   apiHeader: string,
   apiKey: string
-): Promise<any | undefined> => {
+): Promise<ResolveAddressIdentityByEndpointProps | undefined> => {
   // Default TTL is 5 Mins to change timeout check https://github.com/kuitos/axios-extensions#cacheadapterenhancer
   try {
     const response = await get({
