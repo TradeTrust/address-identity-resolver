@@ -24,7 +24,7 @@ interface EntityLookupProps {
 interface ResolveAddressIdentityByEndpointProps {
   name: string;
   source: string;
-  [key: string]: string;
+  [key: string]: string; // to account for any other field that might be used from api response.
 }
 
 const get = async ({
