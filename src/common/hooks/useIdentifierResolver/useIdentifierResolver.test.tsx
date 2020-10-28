@@ -23,8 +23,8 @@ describe("useIdentifierResolver", () => {
     const sampleAddress = "0xa61B056dA0084a5f391EC137583073096880C2e3";
     const sampleResult: ResolutionResult = {
       name: "DBS",
-      resolvedBy: "GOVTECH",
-      source: "Local",
+      resolvedBy: "Local",
+      source: "",
     };
     mockGetIdentifier.mockReturnValueOnce(sampleResult);
     const { result } = renderHook(() => useIdentifierResolver(sampleAddress));
