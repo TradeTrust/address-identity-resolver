@@ -63,7 +63,7 @@ export const entityLookup = async ({
 
   const url = `${endpoint}search?q=${query}${anyOffset}${anyLimit}`;
   const response = await get({ url, apiHeader, apiKey });
-  return response.data.identities;
+  return response.data;
 };
 
 export const resolveAddressIdentityByEndpoint = async (
