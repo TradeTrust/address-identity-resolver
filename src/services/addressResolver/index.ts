@@ -1,12 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { join } from "path";
 import { getLogger } from "../../logger";
-import {
-  AddressBookThirdPartyResultsProps,
-  HeadersProps,
-  ResolutionResult,
-  ThirdPartyAPIEntryProps,
-} from "../../types";
+import { EntityLookupResponseProps, HeadersProps, ResolutionResult, ThirdPartyAPIEntryProps } from "../../types";
 import { cachedAxios } from "./axiosClient";
 
 const { trace, error } = getLogger("service:addressresolver");
@@ -57,7 +52,7 @@ export const entityLookup = async ({
   endpoint,
   apiHeader,
   apiKey,
-}: EntityLookupProps): Promise<AddressBookThirdPartyResultsProps[]> => {
+}: EntityLookupProps): Promise<EntityLookupResponseProps> => {
   const anyLimit = limit !== undefined ? `&limit=${limit}` : "";
   const anyOffset = offset !== undefined ? `&offset=${offset}` : "";
 

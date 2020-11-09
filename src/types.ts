@@ -36,3 +36,9 @@ export interface AddressBookThirdPartyResultsProps {
 export interface HeadersProps {
   [key: string]: string;
 }
+
+export interface EntityLookupResponseProps {
+  identities: AddressBookThirdPartyResultsProps[];
+  count: number;
+  total: number;
+}
