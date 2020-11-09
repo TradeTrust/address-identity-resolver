@@ -1,12 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { join } from "path";
+import { getLogger } from "../../logger";
 import {
   AddressBookThirdPartyResultsProps,
   HeadersProps,
   ResolutionResult,
   ThirdPartyAPIEntryProps,
 } from "../../types";
-import { getLogger } from "../../logger";
 import { cachedAxios } from "./axiosClient";
 
 const { trace, error } = getLogger("service:addressresolver");
@@ -16,6 +16,8 @@ export const getPath = (path: string, base: string): string => new URL(path, bas
 
 interface EntityLookupProps {
   query: string;
+  offset?: string;
+  limit?: string;
   endpoint: string;
   apiHeader?: string;
   apiKey?: string;
@@ -49,12 +51,17 @@ const get = async ({
 };
 
 export const entityLookup = async ({
+  limit,
+  offset,
   query,
   endpoint,
   apiHeader,
   apiKey,
 }: EntityLookupProps): Promise<AddressBookThirdPartyResultsProps[]> => {
-  const url = `${endpoint}search?q=${query}`;
+  const anyLimit = limit !== undefined ? `&limit=${limit}` : "";
+  const anyOffset = offset !== undefined ? `&offset=${offset}` : "";
+
+  const url = `${endpoint}search?q=${query}${anyOffset}${anyLimit}`;
   const response = await get({ url, apiHeader, apiKey });
   return response.data.identities;
 };
