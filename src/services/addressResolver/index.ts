@@ -1,12 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { join } from "path";
-import {
-  AddressBookThirdPartyResultsProps,
-  HeadersProps,
-  ResolutionResult,
-  ThirdPartyAPIEntryProps,
-} from "../../types";
+import queryString from "query-string";
 import { getLogger } from "../../logger";
+import { EntityLookupResponseProps, HeadersProps, ResolutionResult, ThirdPartyAPIEntryProps } from "../../types";
 import { cachedAxios } from "./axiosClient";
 
 const { trace, error } = getLogger("service:addressresolver");
@@ -16,6 +12,8 @@ export const getPath = (path: string, base: string): string => new URL(path, bas
 
 interface EntityLookupProps {
   query: string;
+  offset?: string;
+  limit?: string;
   endpoint: string;
   apiHeader?: string;
   apiKey?: string;
@@ -49,14 +47,24 @@ const get = async ({
 };
 
 export const entityLookup = async ({
+  limit,
+  offset,
   query,
   endpoint,
   apiHeader,
   apiKey,
-}: EntityLookupProps): Promise<AddressBookThirdPartyResultsProps[]> => {
-  const url = `${endpoint}search?q=${query}`;
+}: EntityLookupProps): Promise<EntityLookupResponseProps> => {
+  const url = queryString.stringifyUrl({
+    url: `${endpoint}search`,
+    query: {
+      q: query,
+      limit,
+      offset,
+    },
+  });
+
   const response = await get({ url, apiHeader, apiKey });
-  return response.data.identities;
+  return response.data;
 };
 
 export const resolveAddressIdentityByEndpoint = async (
