@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { join } from "path";
+import queryString from "query-string";
 import { getLogger } from "../../logger";
 import { EntityLookupResponseProps, HeadersProps, ResolutionResult, ThirdPartyAPIEntryProps } from "../../types";
 import { cachedAxios } from "./axiosClient";
@@ -53,10 +54,15 @@ export const entityLookup = async ({
   apiHeader,
   apiKey,
 }: EntityLookupProps): Promise<EntityLookupResponseProps> => {
-  const anyLimit = limit !== undefined ? `&limit=${limit}` : "";
-  const anyOffset = offset !== undefined ? `&offset=${offset}` : "";
+  const url = queryString.stringifyUrl({
+    url: `${endpoint}search`,
+    query: {
+      q: query,
+      limit,
+      offset,
+    },
+  });
 
-  const url = `${endpoint}search?q=${query}${anyOffset}${anyLimit}`;
   const response = await get({ url, apiHeader, apiKey });
   return response.data;
 };
