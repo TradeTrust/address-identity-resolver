@@ -17,6 +17,7 @@ interface EntityLookupProps {
   endpoint: string;
   apiHeader?: string;
   apiKey?: string;
+  path: string;
 }
 
 interface ResolveAddressIdentityByEndpointProps {
@@ -53,9 +54,10 @@ export const entityLookup = async ({
   endpoint,
   apiHeader,
   apiKey,
+  path,
 }: EntityLookupProps): Promise<EntityLookupResponseProps> => {
   const url = queryString.stringifyUrl({
-    url: `${endpoint}search`,
+    url: getPath(path, endpoint),
     query: {
       q: query,
       limit,

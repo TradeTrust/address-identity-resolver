@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ThirdPartyAPIEntryProps } from "../../types";
-import { getFeatures, getIdentity, getPath } from "./index";
+import { getFeatures, getIdentity, getPath, entityLookup } from "./index";
 
 jest.mock("axios");
 jest.mock("./axiosClient");
@@ -173,6 +173,61 @@ describe("addressResolver", () => {
       const e = new Error("Generic error message");
       mockedAxios.get.mockRejectedValueOnce(e);
       await expect(getFeatures("https://some.url", "key", "value")).rejects.toThrow(/Generic error message/);
+    });
+  });
+
+  describe("entityLookup", () => {
+    const data = {
+      identities: [
+        {
+          identifier: "0x3aaff3bf29cd85a7ba3dec33f5d0269e72097d26",
+          name: "TradeSafe.Club",
+          source: "",
+          remarks: "Added by Marcus Ong",
+        },
+      ],
+      count: 1,
+      total: 1,
+    };
+
+    it("should call when endpoint is without trailing slash", async () => {
+      mockedAxios.get.mockResolvedValueOnce({
+        data: data,
+      });
+      const response = await entityLookup({
+        limit: "20",
+        offset: "1",
+        query: "Marcus",
+        endpoint: "https://some.url",
+        apiHeader: "x-api-key",
+        apiKey: "DEMO",
+        path: "/search",
+      });
+
+      expect(mockedAxios.get).toHaveBeenCalledWith("https://some.url/search?limit=20&offset=1&q=Marcus", {
+        headers: { "x-api-key": "DEMO" },
+      });
+      expect(response).toEqual(data);
+    });
+
+    it("should call when endpoint is with trailing slash", async () => {
+      mockedAxios.get.mockResolvedValueOnce({
+        data: data,
+      });
+      const response = await entityLookup({
+        limit: "20",
+        offset: "1",
+        query: "Marcus",
+        endpoint: "https://some.url/",
+        apiHeader: "x-api-key",
+        apiKey: "DEMO",
+        path: "/search",
+      });
+
+      expect(mockedAxios.get).toHaveBeenCalledWith("https://some.url/search?limit=20&offset=1&q=Marcus", {
+        headers: { "x-api-key": "DEMO" },
+      });
+      expect(response).toEqual(data);
     });
   });
 });
