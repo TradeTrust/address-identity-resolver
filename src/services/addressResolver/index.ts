@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { join } from "path";
 import queryString from "query-string";
 import { getLogger } from "../../logger";
@@ -127,7 +127,7 @@ export const getFeatures = async (url: string, apiHeader?: string, apiKey?: stri
     });
     return response.data;
   } catch (e) {
-    const err: AxiosError = e;
+    const err: any = e;
     if (err.response?.data) {
       error(err.response.data);
     }
