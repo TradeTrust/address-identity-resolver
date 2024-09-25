@@ -4,7 +4,6 @@ import { ThirdPartyAPIEntryProps } from "../../types";
 import { getFeatures, getIdentity, getPath, entityLookup } from "./index";
 
 jest.mock("axios");
-jest.mock("./axiosClient");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 

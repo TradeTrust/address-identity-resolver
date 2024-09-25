@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from "axios";
 import queryString from "query-string";
 import { getLogger } from "../../logger";
 import { EntityLookupResponseProps, HeadersProps, ResolutionResult, ThirdPartyAPIEntryProps } from "../../types";
-import { cachedAxios } from "./axiosClient";
 
 const { trace, error } = getLogger("service:addressresolver");
 
@@ -36,13 +35,12 @@ const get = async ({
   apiKey?: string;
   cache?: boolean;
 }): Promise<AxiosResponse> => {
-  const client = cache ? cachedAxios : axios;
   if (apiHeader && apiKey) {
     const headers: HeadersProps = {};
     headers[apiHeader] = apiKey;
-    return client.get(url, { headers });
+    return axios.get(url, { headers });
   } else {
-    return client.get(url);
+    return axios.get(url);
   }
 };
 
