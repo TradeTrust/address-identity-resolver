@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, renderHook } from "@testing-library/react-hooks";
 import { useIdentifierResolver } from "./useIdentifierResolver";
 import { useAddressBook } from "../useAddressBook";
@@ -5,11 +6,11 @@ import { getIdentity } from "../../../services/addressResolver";
 import { ResolutionResult } from "../../../types";
 
 jest.mock("../useAddressBook");
-const mockUseAddressBook = useAddressBook as jest.Mock;
+const mockUseAddressBook = jest.mocked(useAddressBook) as any;
 const mockGetIdentifier = jest.fn();
 
 jest.mock("../../../services/addressResolver");
-const mockGetIdentityName = getIdentity as jest.Mock;
+const mockGetIdentityName = jest.mocked(getIdentity);
 
 describe("useIdentifierResolver", () => {
   beforeEach(async () => {
@@ -20,6 +21,7 @@ describe("useIdentifierResolver", () => {
 
   it("should get identityName, identityResolvedBy and identitySource when getIdentifier called", async () => {
     expect.assertions(4);
+
     const sampleAddress = "0xa61B056dA0084a5f391EC137583073096880C2e3";
     const sampleResult: ResolutionResult = {
       name: "DBS",
@@ -37,6 +39,7 @@ describe("useIdentifierResolver", () => {
 
   it("should get resolvedIdentifier and identifierSource when getIdentityName is called", async () => {
     expect.assertions(4);
+
     const sampleAddress = "0xa61B056dA0084a5f391EC137583073096880C2e3";
     const sampleResult = {
       name: "DBS",

@@ -12,7 +12,7 @@ interface UseThirdPartyAPIEndpoints {
 export const useThirdPartyAPIEndpoints = (): UseThirdPartyAPIEndpoints => {
   const defaultThirdPartyAPIEndpoints: ThirdPartyAPIEntryProps[] = [];
   const [thirdPartyAPIEndpoints, setThirdPartyAPIEndpoints] = createPersistedState("ADDRESS_THIRD_PARTY_ENDPOINTS")(
-    defaultThirdPartyAPIEndpoints
+    defaultThirdPartyAPIEndpoints,
   );
 
   const addThirdPartyAPIEndpoint = (newValues: ThirdPartyAPIEntryProps): void => {

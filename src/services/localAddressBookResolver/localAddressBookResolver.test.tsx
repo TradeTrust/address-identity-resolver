@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { csvToAddressBook, readAsText } from "./localAddressBookResolver";
 
 const csvLines = [
@@ -23,13 +24,17 @@ describe("localAddressBookResolver", () => {
 
   it("should convert file to text", async () => {
     expect.assertions(1);
+
     const result = await readAsText(sampleCsvFile);
+
     expect(result).toStrictEqual(csvString);
   });
 
   it("should convert string to addressbook format", async () => {
     expect.assertions(1);
+
     const result = csvToAddressBook(csvString);
+
     expect(result).toStrictEqual(sampleAddressBook);
   });
 });

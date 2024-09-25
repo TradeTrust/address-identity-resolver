@@ -1,4 +1,5 @@
-import { wait } from "@testing-library/react";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { waitFor } from "@testing-library/react";
 import { act, renderHook } from "@testing-library/react-hooks";
 import { useAddressBook } from "./useAddressBook";
 
@@ -31,26 +32,30 @@ describe("useAddressBook", () => {
 
   it("should set addressBook when local csv file provided", async () => {
     expect.assertions(1);
+
     const { result } = renderHook(() => useAddressBook());
     await act(async () => {
-      await wait(() => {
+      await waitFor(() => {
         result.current.handleLocalAddressBookCsv(sampleCsvFile);
       });
     });
+
     expect(result.current.addressBook).toStrictEqual(sampleAddressBook);
   });
 
   it("should get identity if provided in local address book", async () => {
     expect.assertions(2);
+
     const { result } = renderHook(() => useAddressBook());
 
     await act(async () => {
-      await wait(() => {
-        result.current.handleLocalAddressBookCsv(sampleCsvFile);
-      });
+      await waitFor(() => result.current.handleLocalAddressBookCsv(sampleCsvFile));
     });
+
     expect(result.current.addressBook).toStrictEqual(sampleAddressBook);
+
     const identityResult = result.current.getIdentifier("0xE94E4f16ad40ADc90C29Dc85b42F1213E034947C");
+
     expect(identityResult).toStrictEqual({
       name: "Bank of China",
       resolvedBy: "Local",
@@ -60,27 +65,35 @@ describe("useAddressBook", () => {
 
   it("should return undefined if no such identity in local address book", async () => {
     expect.assertions(2);
+
     const { result } = renderHook(() => useAddressBook());
     await act(async () => {
-      await wait(() => {
+      await waitFor(() => {
         result.current.handleLocalAddressBookCsv(sampleCsvFile);
       });
     });
+
     expect(result.current.addressBook).toStrictEqual(sampleAddressBook);
+
     const identityResult = result.current.getIdentifier("0xcE26E13045363a4aFb1f4dc6b584256cCb0DDd14");
+
     expect(identityResult).toBeUndefined();
   });
 
   it("address book should be persistant", async () => {
     expect.assertions(2);
+
     const { result, rerender } = renderHook(() => useAddressBook());
     await act(async () => {
-      await wait(() => {
+      await waitFor(() => {
         result.current.handleLocalAddressBookCsv(sampleCsvFile);
       });
     });
+
     expect(result.current.addressBook).toStrictEqual(sampleAddressBook);
+
     rerender();
+
     expect(result.current.addressBook).toStrictEqual(sampleAddressBook);
   });
 });

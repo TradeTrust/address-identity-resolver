@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import axios from "axios";
 import { ThirdPartyAPIEntryProps } from "../../types";
 import { getFeatures, getIdentity, getPath, entityLookup } from "./index";
@@ -39,6 +40,7 @@ describe("addressResolver", () => {
       ];
 
       const identity = await getIdentity(endpoints, "0xA");
+
       expect(identity).toEqual({ name: "ABC Pte Ltd", resolvedBy: "demo", source: "GovTech, Singapore" });
     });
 
@@ -63,6 +65,7 @@ describe("addressResolver", () => {
       ];
 
       const identity = await getIdentity(endpoints, "0xB");
+
       expect(identity).toBeUndefined();
     });
 
@@ -76,6 +79,7 @@ describe("addressResolver", () => {
       const endpoints: ThirdPartyAPIEntryProps[] = [];
 
       const identity = await getIdentity(endpoints, "0xC");
+
       expect(identity).toBeUndefined();
     });
 
@@ -105,6 +109,7 @@ describe("addressResolver", () => {
       ];
 
       const identity = await getIdentity(endpoints, "0xA");
+
       expect(mockedAxios.get.mock.calls[0][0]).toBe("https://demo-resolver.tradetrust.io/identifier/0xA");
       expect(identity).toEqual({ name: "ABC Pte Ltd", resolvedBy: "demo", source: "GovTech, Singapore" });
     });
@@ -133,6 +138,7 @@ describe("addressResolver", () => {
         },
       });
       const res = await getFeatures("https://some.url", "", "");
+
       expect(res).toEqual({
         features: {
           addressResolution: { location: "/identifier" },
@@ -141,6 +147,7 @@ describe("addressResolver", () => {
       });
       expect(mockedAxios.get).toHaveBeenCalledWith("https://some.url");
     });
+
     it("should include the api headers when its provided", async () => {
       mockedAxios.get.mockResolvedValue({
         data: {
@@ -155,6 +162,7 @@ describe("addressResolver", () => {
         },
       });
       const res = await getFeatures("https://some.url", "key", "value");
+
       expect(res).toEqual({
         features: {
           addressResolution: { location: "/identifier" },
@@ -163,15 +171,19 @@ describe("addressResolver", () => {
       });
       expect(mockedAxios.get).toHaveBeenCalledWith("https://some.url", { headers: { key: "value" } });
     });
+
     it("should throw message returned from the api whenever possible", async () => {
       const e: any = new Error("Generic error message");
       e.response = { data: { message: "Some known error from server" } };
       mockedAxios.get.mockRejectedValueOnce(e);
+
       await expect(getFeatures("https://some.url", "key", "value")).rejects.toThrow(/Some known error from server/);
     });
+
     it("should throw generic error message when message is not available", async () => {
       const e = new Error("Generic error message");
       mockedAxios.get.mockRejectedValueOnce(e);
+
       await expect(getFeatures("https://some.url", "key", "value")).rejects.toThrow(/Generic error message/);
     });
   });
