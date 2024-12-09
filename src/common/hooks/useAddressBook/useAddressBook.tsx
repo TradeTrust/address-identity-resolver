@@ -13,7 +13,7 @@ interface UseAddressBook {
 // add return types
 export const useAddressBook = (): UseAddressBook => {
   const defaultAddressBook: AddressBookLocalProps = {};
-  const [addressBook, setAddressBook] = createPersistedState("ADDRESS_BOOK")(defaultAddressBook);
+  const [addressBook, setAddressBook] = createPersistedState<AddressBookLocalProps>("ADDRESS_BOOK")(defaultAddressBook);
 
   const handleLocalAddressBookCsv = useCallback(
     async (csvFile: File): Promise<void> => {
