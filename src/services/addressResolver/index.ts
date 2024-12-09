@@ -28,6 +28,7 @@ const get = async ({
   url,
   apiHeader,
   apiKey,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   cache = false,
 }: {
   url: string;
