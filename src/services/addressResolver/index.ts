@@ -90,7 +90,7 @@ export const resolveAddressIdentityByEndpoint = async (
 const join = (string1: string, string2: string): string => {
   if (!string1) return string2;
   if (!string2) return string1;
-  string1 = string1.slice(-1) === "/" ? string1.slice(0,-1) : string1;
+  string1 = string1.slice(-1) === "/" ? string1.slice(0, -1) : string1;
   string2 = string2.slice(0) === "/" ? string2.slice(1) : string2;
   return [string1, string2].join("/");
 };
