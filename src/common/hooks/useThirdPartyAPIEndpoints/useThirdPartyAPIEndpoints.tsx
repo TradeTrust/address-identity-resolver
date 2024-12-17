@@ -11,9 +11,9 @@ interface UseThirdPartyAPIEndpoints {
 
 export const useThirdPartyAPIEndpoints = (): UseThirdPartyAPIEndpoints => {
   const defaultThirdPartyAPIEndpoints: ThirdPartyAPIEntryProps[] = [];
-  const [thirdPartyAPIEndpoints, setThirdPartyAPIEndpoints] = createPersistedState("ADDRESS_THIRD_PARTY_ENDPOINTS")(
-    defaultThirdPartyAPIEndpoints
-  );
+  const [thirdPartyAPIEndpoints, setThirdPartyAPIEndpoints] = createPersistedState<ThirdPartyAPIEntryProps[]>(
+    "ADDRESS_THIRD_PARTY_ENDPOINTS",
+  )(defaultThirdPartyAPIEndpoints);
 
   const addThirdPartyAPIEndpoint = (newValues: ThirdPartyAPIEntryProps): void => {
     setThirdPartyAPIEndpoints([...thirdPartyAPIEndpoints, newValues]);

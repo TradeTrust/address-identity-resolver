@@ -1,9 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import { join } from "path";
 import queryString from "query-string";
 import { getLogger } from "../../logger";
 import { EntityLookupResponseProps, HeadersProps, ResolutionResult, ThirdPartyAPIEntryProps } from "../../types";
-import { cachedAxios } from "./axiosClient";
 
 const { trace, error } = getLogger("service:addressresolver");
 
@@ -30,6 +28,7 @@ const get = async ({
   url,
   apiHeader,
   apiKey,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   cache = false,
 }: {
   url: string;
@@ -37,13 +36,12 @@ const get = async ({
   apiKey?: string;
   cache?: boolean;
 }): Promise<AxiosResponse> => {
-  const client = cache ? cachedAxios : axios;
   if (apiHeader && apiKey) {
     const headers: HeadersProps = {};
     headers[apiHeader] = apiKey;
-    return client.get(url, { headers });
+    return axios.get(url, { headers });
   } else {
-    return client.get(url);
+    return axios.get(url);
   }
 };
 
@@ -72,7 +70,7 @@ export const entityLookup = async ({
 export const resolveAddressIdentityByEndpoint = async (
   url: string,
   apiHeader: string,
-  apiKey: string
+  apiKey: string,
 ): Promise<ResolveAddressIdentityByEndpointProps | undefined> => {
   // Default TTL is 5 Mins to change timeout check https://github.com/kuitos/axios-extensions#cacheadapterenhancer
   try {
@@ -89,9 +87,17 @@ export const resolveAddressIdentityByEndpoint = async (
   }
 };
 
+const join = (string1: string, string2: string): string => {
+  if (!string1) return string2;
+  if (!string2) return string1;
+  string1 = string1.slice(-1) === "/" ? string1.slice(0, -1) : string1;
+  string2 = string2.slice(0) === "/" ? string2.slice(1) : string2;
+  return [string1, string2].join("/");
+};
+
 export const getIdentity = async (
   addresses: ThirdPartyAPIEntryProps[],
-  address: string
+  address: string,
 ): Promise<ResolutionResult | undefined> => {
   const identity = await addresses.reduce(async (accumulator, currentValue) => {
     if (await accumulator) return accumulator;
