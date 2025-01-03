@@ -1,5 +1,5 @@
 {
-  "name": "@govtechsg/address-identity-resolver",
+  "name": "@tradetrust-tt/address-identity-resolver",
   "version": "0.0.0-development",
   "publishConfig": {
     "access": "public"
