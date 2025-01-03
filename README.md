@@ -3,7 +3,7 @@
 ## Install
 
 ```sh
-npm i --save @govtechsg/address-identity-resolver
+npm i --save @tradetrust-tt/address-identity-resolver
 ```
 
 ## Hooks
